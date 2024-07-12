@@ -36,6 +36,8 @@ class Response:
         for line in lines:
             response_list.append(line.strip()) #remove whitespaces
 
+        response_file.close()
+
         return response_list
 
     
