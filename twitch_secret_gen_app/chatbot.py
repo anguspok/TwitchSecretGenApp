@@ -1,5 +1,6 @@
 import twitchio
 from twitchio.ext import commands
+from response import Response
 
 class Bot(commands.Bot):
 
@@ -15,34 +16,39 @@ class Bot(commands.Bot):
         print(f'Logged in as | {self.nick}')
         print(f'User id is | {self.user_id}')
 
-    async def event_message(self, message):
-        # Messages with echo set to True are messages sent by the bot...
-        # For now we just want to ignore them...
-        if message.echo:
-            return
 
-        # Print the contents of our message to console...
-        print(message.content)
+    async def event_command_error(self, context: commands.Context, error: Exception):
+            if isinstance(error, commands.CommandNotFound):
+                return
 
-        # Since we have commands and are overriding the default `event_message`
-        # We must let the bot know we want to handle and invoke our commands...
-        await self.handle_commands(message)
+            elif isinstance(error, commands.ArgumentParsingFailed):
+                await context.send(error.message)
 
-    @commands.command()
-    async def hello(self, ctx: commands.Context):
-        # Here we have a command hello, we can invoke our command with our prefix and command name
-        # e.g ?hello
-        # We can also give our commands aliases (different names) to invoke with.
+            elif isinstance(error, commands.MissingRequiredArgument):
+                await context.send("You're missing an argument: " + error.name)
 
-        # Send a hello back!
-        # Sending a reply back to the channel is easy... Below is an example.
-        await ctx.send(f'Hello {ctx.author.name}!')
+            elif isinstance(error, commands.CheckFailure): # we'll explain checks later, but lets include it for now.
+                await context.send("Sorry, you cant run that command: " + error.args[0])
+
+            elif isinstance(error, MissingGuessWord):
+                await context.send()
+
+            else:
+                print(error)
+
 
     @commands.command()
-    async def guess(self, ctx: commands.Context):
-        # command guess, invoke command with prefix and command name
+    # command guess, invoke command with prefix and command name and phrase
+    # eg. !guess phrase
+    async def guess(self, ctx: commands.Context, guess_phrase: str = None):
+        if guess_phrase is None:
+            raise("No guess word/phrase was entered")
 
-        # await ctx.send(f'Hello {ctx.author.name}!')
+        # retrieve response
+        response = Response.give_response(guess_phrase)
+        
+        # send response to chat
+        await ctx.send(f'@{ctx.author.name} {response}')
 
 
 bot = Bot()
