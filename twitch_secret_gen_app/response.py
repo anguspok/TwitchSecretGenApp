@@ -1,5 +1,6 @@
 from pathlib import Path
 from random import randint
+from guess import Guess
 
 
 class Response:
@@ -8,20 +9,25 @@ class Response:
 
     Methods
     -------
+    response_reader(filepath):
+        Reads from response.txt
+    
     response_gen(response_list):
-         randomly chooses a response from response_list
+         Generates a random number corresponding to index of elements in response_list
 
-    give_response(response)
+    give_response(response):
+        Receives input from chat and gives a suitable response
     '''
     filepath = Path(r'FILEPATH')
 
     def response_reader(self, filepath: str) -> list:
         '''
-        reads from response.txt
-            Parameters:
+        Reads from response.txt
+        
+        Parameters:
             filepath (str): absolute file path of response.txt
 
-            Returns:
+        Returns:
             response_list (list): List of responses
         '''
         response_file = open(filepath, "rt")
@@ -43,11 +49,12 @@ class Response:
     
     def response_gen(self, response_list) -> str:
         '''
-        generates a random number corresponding to index of elements in response_list
-            Parameters:
-                response_list (list): List of responses
-            Returns:
-                gen_response (str): Randomly chosen response
+        Generates a random number corresponding to index of elements in response_list
+        
+        Parameters:
+            response_list (list): List of responses
+        Returns:
+            gen_response (str): Randomly chosen response
         '''
         # upper limit of random int range
         end_index = len(response_list) - 1
@@ -62,3 +69,22 @@ class Response:
         gen_response = response_list[gen_num]
 
         return gen_response
+    
+
+    def give_response(self, chat_input) -> str:
+        '''
+        Receives input from chat and gives a suitable response
+
+        Parameters:
+            chat_input (str): word/phrase argument used with !guess command
+
+        Returns:
+            response_str (str): response that chatbot will send to chat
+        '''
+        # validate word by calling validator
+        result = Guess.guess_validator(chat_input, secret=Guess.secret)
+
+        if result:
+            pass
+        else:
+            pass
