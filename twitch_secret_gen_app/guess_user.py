@@ -72,7 +72,7 @@ class User:
 
         # user is locked
         if self.is_locked:
-            return "you have used all 3 attempts"
+            return " you have used all 3 attempts"
 
         # user is not locked
         else:
