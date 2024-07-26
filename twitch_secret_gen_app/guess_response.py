@@ -1,5 +1,4 @@
 from abc import ABC,  abstractmethod
-from pathlib import Path
 from random import randint
 from guess_user import User
 from file_manager import ResponseFile
@@ -22,9 +21,9 @@ class Guess:
     # secret word/phrase to be guessed
     secret = "SECRET"
 
-    def __init__(self, input_from_chat: str, is_verified=False) -> None:
+    def __init__(self, input_from_chat: str, is_correct=False) -> None:
         self.input_from_chat = input_from_chat
-        self.is_verified = is_verified
+        self.is_correct = is_correct
 
     def verify_guess(self) -> bool:
         '''
@@ -41,11 +40,8 @@ class Guess:
         '''
         # comparing chat input to arbitrary secret word 
         if self.input_from_chat.lower() == Guess.secret.lower():
-            self.is_verified = True
-            return True # word matches
-        else:
-            self.is_verified = False
-            return False # word does not match 
+            # update status of guess to correct
+            self.is_correct = True
 
 class Response:
     '''
