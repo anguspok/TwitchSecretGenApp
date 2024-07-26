@@ -29,7 +29,7 @@ class FileManager(ABC):
 class ResponseFile(FileManager):
     response_filepath = 'data/response.txt'
 
-    def file_reader(self):
+    def file_reader(self) -> list:
         with open(ResponseFile.response_filepath, 'rt') as responsetxt_file:
             # initialize empty list
             responses = []
