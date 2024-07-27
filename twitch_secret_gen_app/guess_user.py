@@ -15,16 +15,6 @@ class User:
 
     def __init__(self, user: str) -> None:
         self.user = user
-
-
-    @classmethod
-    def new_user_updater(self) -> None:
-        '''
-        Class method: adds new user to user_dict as key, 
-        sets value of new user as 1
-        '''
-        # add user and record attempts as 1
-        User.user_dict[self.user] += 1
     
 
     @classmethod
@@ -75,10 +65,10 @@ class User:
     def new_user_updater(self) -> None:
         '''
         Class method: adds new user to user_dict as key, 
-        sets value of new user as 1
+        gives default value of user key
         '''
-        # add user and record attempts as 1
-        User.user_dict[self.user] 
+        # default value: [is_locked=False, num_of_attempts=1]
+        User.users[self.user] = [False, 1]
 
     
     def handle_user(self) -> str:
