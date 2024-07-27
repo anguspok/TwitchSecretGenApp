@@ -15,15 +15,6 @@ class User:
 
     def __init__(self, user: str) -> None:
         self.user = user
-    
-
-    @classmethod
-    def repeat_user_updater(self) -> None:
-        '''
-        Class method: updates value of user key by +1
-        '''
-        # update number of attempts made by user by 1
-        User.user_dict[self.user]+=1
 
 
     @classmethod
@@ -70,7 +61,19 @@ class User:
         # default value: [is_locked=False, num_of_attempts=1]
         User.users[self.user] = [False, 1]
 
+
+    @classmethod
+    def repeat_user_updater(self) -> None:
+        '''
+        Class method: updates value of user key by +1
+        '''
+        # {user:[is_locked, num_of_attempts]}
+        User.user_dict[self.user][1]+=1
+
+
     
+
+
     def handle_user(self) -> str:
         '''
         Checks if user is locked, 
