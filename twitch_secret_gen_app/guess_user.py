@@ -7,13 +7,14 @@ class User:
     handle_user():
         Returns a response to the user for an incorrect guess made
     '''
-    # holds users and attempts made
-    user_dict = {}
+    # key: username, value: [is_locked, num_of_attempts]
+    users = {}
 
-    def __init__(self, user: str, is_locked=False, is_repeat=False) -> None:
+    # all repeat users
+    repeat_users = list(users.keys())
+
+    def __init__(self, user: str) -> None:
         self.user = user
-        self.is_locked = is_locked
-        self.is_repeat = is_repeat
 
 
     @classmethod
@@ -24,9 +25,6 @@ class User:
         '''
         # add user and record attempts as 1
         User.user_dict[self.user] += 1
-
-        # modify user status to repeat user
-        self.is_repeat = True
     
 
     @classmethod
@@ -55,6 +53,33 @@ class User:
             # modify user status to locked
             self.is_locked = True
     
+
+    def check_for_new_user(self) -> str:
+        '''
+        Checks if user is repeat user
+
+        Parameters
+        ----------
+        user (str): username
+
+        Returns
+        -------
+        str: indicates if user is repeated or new
+        '''
+        if self.user in User.repeat_users:
+            return "repeat" # is repeat user
+        else:
+            return "new" # is new user
+        
+    @classmethod
+    def new_user_updater(self) -> None:
+        '''
+        Class method: adds new user to user_dict as key, 
+        sets value of new user as 1
+        '''
+        # add user and record attempts as 1
+        User.user_dict[self.user] 
+
     
     def handle_user(self) -> str:
         '''
